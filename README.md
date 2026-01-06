@@ -101,7 +101,12 @@ This project was built to demonstrate:
 - Clean API and backend architecture
 - Practical use of Supabase with Node.js
 
+
+
 ---
+
+## Deployment link:
+https://smart-inventory-flexype.onrender.com/
 
 ## 📌 Note
 
