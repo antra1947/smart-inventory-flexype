@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FlexyPe Flash Sale</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f1f3f6;
+    }
+
+    header {
+      background: #2874f0;
+      color: white;
+      padding: 14px 30px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .container {
+      display: flex;
+      gap: 30px;
+      padding: 30px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .product {
+      background: white;
+      flex: 2;
+      padding: 20px;
+      border-radius: 6px;
+    }
+
+    .product img {
+      width: 100%;
+      max-height: 320px;
+      object-fit: contain;
+    }
+
+    .title {
+      font-size: 22px;
+      margin: 10px 0;
+    }
+
+    .price {
+      font-size: 24px;
+      color: #388e3c;
+      font-weight: bold;
+    }
+
+    .rating {
+      color: #ff9f00;
+      margin: 5px 0;
+    }
+
+    .stock {
+      margin: 15px 0;
+      font-weight: bold;
+      color: #d32f2f;
+    }
+
+    .checkout {
+      background: white;
+      flex: 1;
+      padding: 20px;
+      border-radius: 6px;
+      position: sticky;
+      top: 20px;
+    }
+
+    .checkout h3 {
+      margin-top: 0;
+    }
+
+    .timer {
+      color: #d32f2f;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 4px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .reserve {
+      background: #ff9f00;
+      color: black;
+    }
+
+    .confirm {
+      background: #388e3c;
+      color: white;
+    }
+
+    .cancel {
+      background: #e53935;
+      color: white;
+    }
+
+    .message {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<header>FlexyPe Flash Sale</header>
+
+<div class="container">
+  <div class="product">
+    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff" />
+    <div class="title">Nike Running Shoes</div>
+    <div class="rating">★★★★☆ (4.4)</div>
+    <div class="price">₹4,999</div>
+    <div class="stock" id="stock">Loading inventory...</div>
+  </div>
+
+ <div class="checkout">
+  <h3>Checkout</h3>
+  <p id="checkoutStock">Checking availability...</p>
+
+
+    <div class="timer" id="timer"></div>
+
+    <button class="reserve" onclick="reserve()">Reserve Item</button>
+    <button class="confirm" onclick="confirmOrder()">Confirm Order</button>
+    <button class="cancel" onclick="cancelOrder()">Cancel</button>
+
+    <div class="message" id="message"></div>
+  </div>
+</div>
+
+<script>
+const sku = "sku1";
+const reservationId = "user_" + Math.floor(Math.random() * 100000);
+let expiry;
+let interval;
+
+function loadInventory() {
+  fetch("/inventory/" + sku)
+    .then(r => r.json())
+    .then(d => {
+      document.getElementById("stock").innerText =
+        "Only " + d.available + " items left";
+
+      document.getElementById("checkoutStock").innerText =
+        d.available > 0
+          ? "In stock: " + d.available + " item(s)"
+          : "Out of stock";
+
+      document.querySelector(".reserve").disabled = d.available === 0;
+    });
+}
+
+function reserve() {
+  fetch("/inventory/reserve", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ sku, reservationId })
+  })
+  .then(r => r.json())
+  .then(() => {
+    document.getElementById("message").innerText =
+      "Item reserved. Complete payment to confirm.";
+    expiry = Date.now() + 300000;
+    startTimer();
+    loadInventory();
+  });
+}
+
+function confirmOrder() {
+  fetch("/checkout/confirm", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ sku, reservationId })
+  })
+  .then(r => r.json())
+  .then(() => {
+    clearInterval(interval);
+    document.getElementById("timer").innerText = "";
+    document.getElementById("message").innerText =
+      "Order confirmed successfully!";
+    loadInventory();
+  });
+}
+
+function cancelOrder() {
+  fetch("/checkout/cancel", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ sku, reservationId })
+  })
+  .then(r => r.json())
+  .then(() => {
+    clearInterval(interval);
+    document.getElementById("timer").innerText = "";
+    document.getElementById("message").innerText =
+      "Reservation cancelled.";
+    loadInventory();
+  });
+}
+
+function startTimer() {
+  clearInterval(interval);
+  interval = setInterval(() => {
+    const left = expiry - Date.now();
+
+    if (left <= 0) {
+      clearInterval(interval);
+      document.getElementById("timer").innerText = "";
+      document.getElementById("message").innerText =
+        "Reservation expired. Item released back to inventory.";
+      loadInventory();
+    } else {
+      document.getElementById("timer").innerText =
+        "Complete checkout in " + Math.floor(left / 1000) + " sec";
+    }
+  }, 1000);
+}
+
+loadInventory();
+</script>
+
+</body>
+</html>
