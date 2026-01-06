@@ -1,25 +1,48 @@
 import express from "express";
-import { reserve, confirm, cancel, view } from "../services/inventoryService.js";
+import {
+  reserve,
+  confirm,
+  cancel,
+  view,
+  testConnection
+} from "../services/inventoryService.js";
 
 const router = express.Router();
 
-router.post("/inventory/reserve", (req, res) => {
-  const { sku, reservationId } = req.body;
-  res.json(reserve(sku, reservationId));
+
+/* Test Supabase connection */
+router.get("/test-db", async (req, res) => {
+  console.log(req.method);
+  const result = await testConnection();
+  res.json(result);
 });
 
-router.post("/checkout/confirm", (req, res) => {
+
+/* Reserve inventory */
+router.post("/inventory/reserve", async (req, res) => {
   const { sku, reservationId } = req.body;
-  res.json(confirm(sku, reservationId));
+  const result = await reserve(sku, reservationId);
+  res.json(result);
 });
 
-router.post("/checkout/cancel", (req, res) => {
+/* Confirm checkout */
+router.post("/checkout/confirm", async (req, res) => {
   const { sku, reservationId } = req.body;
-  res.json(cancel(sku, reservationId));
+  const result = await confirm(sku, reservationId);
+  res.json(result);
 });
 
-router.get("/inventory/:sku", (req, res) => {
-  res.json(view(req.params.sku));
+/* Cancel checkout */
+router.post("/checkout/cancel", async (req, res) => {
+  const { sku, reservationId } = req.body;
+  const result = await cancel(sku, reservationId);
+  res.json(result);
+});
+
+/* View inventory */
+router.get("/inventory/:sku", async (req, res) => {
+  const result = await view(req.params.sku);
+  res.json(result);
 });
 
 export default router;

@@ -1,4 +1,8 @@
+
+
+
 import express from "express";
+import inventoryController from "./controllers/inventoryController.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import router from "./controllers/inventoryController.js";
@@ -12,6 +16,8 @@ app.use(express.json());
 app.use(router);
 
 app.use(express.static(path.join(__dirname, "../frontend")));
+app.use("/", inventoryController);
+
 
 app.listen(3000, () => {
   console.log("Server running at http://localhost:3000");

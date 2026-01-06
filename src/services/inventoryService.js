@@ -1,7 +1,16 @@
+import supabase from "../config/supabase.js";
+
+
 import inventory from "../repository/inventoryRepo.js";
 
 
 const EXPIRY = 5 * 60 * 1000;
+
+export async function testConnection() {
+  const { data, error } = await supabase.from("inventory").select("*");
+  return { data, error };
+}
+
 
 function cleanup(sku) {
   const item = inventory[sku];
