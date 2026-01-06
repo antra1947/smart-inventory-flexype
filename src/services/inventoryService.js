@@ -1,27 +1,34 @@
 import inventory from "../repository/inventoryRepo.js";
 
+
 const EXPIRY = 5 * 60 * 1000;
 
 function cleanup(sku) {
+  const item = inventory[sku];
+  if (!item) return;
+
   const now = Date.now();
-  const r = inventory[sku].reservations;
-  for (const id in r) {
-    if (r[id].expiresAt <= now) delete r[id];
+  for (const id in item.reservations) {
+    if (item.reservations[id].expiresAt <= now) {
+      delete item.reservations[id];
+    }
   }
 }
 
 export function reserve(sku, reservationId) {
-  cleanup(sku);
   const item = inventory[sku];
+  if (!item) return { message: "Invalid SKU" };
+
+  cleanup(sku);
 
   if (item.reservations[reservationId]) {
     return { message: "Already reserved" };
   }
 
-  let used = 0;
-  for (const r of Object.values(item.reservations)) used += r.qty;
+  const reserved = Object.values(item.reservations)
+    .reduce((sum, r) => sum + r.qty, 0);
 
-  if (item.total - used < 1) {
+  if (item.total - reserved <= 0) {
     return { message: "Out of stock" };
   }
 
@@ -30,32 +37,43 @@ export function reserve(sku, reservationId) {
     expiresAt: Date.now() + EXPIRY
   };
 
-  return { message: "Reserved" };
+  return { message: "Reserved successfully" };
 }
 
 export function confirm(sku, reservationId) {
+  const item = inventory[sku];
+  if (!item) return { message: "Invalid SKU" };
+
   cleanup(sku);
-  const r = inventory[sku].reservations[reservationId];
-  if (!r) return { message: "Expired or invalid" };
 
-  inventory[sku].total -= r.qty;
-  delete inventory[sku].reservations[reservationId];
+  const r = item.reservations[reservationId];
+  if (!r) return { message: "Reservation expired or invalid" };
 
-  return { message: "Confirmed" };
+  item.total -= r.qty;
+  delete item.reservations[reservationId];
+
+  return { message: "Order confirmed" };
 }
 
 export function cancel(sku, reservationId) {
-  delete inventory[sku].reservations[reservationId];
-  return { message: "Cancelled" };
+  const item = inventory[sku];
+  if (!item) return { message: "Invalid SKU" };
+
+  delete item.reservations[reservationId];
+  return { message: "Reservation cancelled" };
 }
 
 export function view(sku) {
+  const item = inventory[sku];
+  if (!item) return { total: 0, available: 0 };
+
   cleanup(sku);
-  let used = 0;
-  for (const r of Object.values(inventory[sku].reservations)) used += r.qty;
+
+  const reserved = Object.values(item.reservations)
+    .reduce((sum, r) => sum + r.qty, 0);
 
   return {
-    total: inventory[sku].total,
-    available: inventory[sku].total - used
+    total: item.total,
+    available: item.total - reserved
   };
 }

@@ -1,233 +1,317 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>FlexyPe Flash Sale</title>
+  <title>FlexyPe Store</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f1f3f6;
+      min-height: 100vh;
+      background:
+        linear-gradient(
+          rgba(0, 0, 0, 0.35),
+          rgba(0, 0, 0, 0.35)
+        ),
+        url("data:image/png;base64,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");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
     }
 
-    header {
-      background: #2874f0;
+    .hero {
+      background:linear-gradient(to right,#2874f0,#6a11cb);
+      color:white;
+      padding:40px;
+      text-align:center;
+      font-size:28px;
+    }
+
+    .section-title {
+      margin:30px auto 10px;
+      max-width:1200px;
+      font-size:22px;
+      font-weight:bold;
       color: white;
-      padding: 14px 30px;
-      font-size: 20px;
-      font-weight: bold;
     }
 
-    .container {
-      display: flex;
-      gap: 30px;
-      padding: 30px;
-      max-width: 1100px;
-      margin: auto;
+    .grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+      gap:20px;
+      padding:20px;
+      max-width:1200px;
+      margin:auto;
     }
 
-    .product {
-      background: white;
-      flex: 2;
-      padding: 20px;
-      border-radius: 6px;
-    }
-
-    .product img {
-      width: 100%;
-      max-height: 320px;
-      object-fit: contain;
-    }
-
-    .title {
-      font-size: 22px;
-      margin: 10px 0;
-    }
-
-    .price {
-      font-size: 24px;
-      color: #388e3c;
-      font-weight: bold;
-    }
-
-    .rating {
-      color: #ff9f00;
-      margin: 5px 0;
-    }
-
-    .stock {
-      margin: 15px 0;
-      font-weight: bold;
-      color: #d32f2f;
-    }
-
-    .checkout {
-      background: white;
-      flex: 1;
-      padding: 20px;
-      border-radius: 6px;
-      position: sticky;
-      top: 20px;
-    }
-
-    .checkout h3 {
-      margin-top: 0;
-    }
-
-    .timer {
-      color: #d32f2f;
-      font-weight: bold;
-      margin: 10px 0;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 4px;
-      font-size: 15px;
+    .card {
+      background:white;
+      padding:15px;
+      border-radius:6px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
       cursor: pointer;
     }
 
-    .reserve {
-      background: #ff9f00;
-      color: black;
+    .card:hover {
+      transform: scale(1.05);
     }
 
-    .confirm {
-      background: #388e3c;
+    img { width:100%; height:180px; object-fit:contain; }
+
+    .title { font-weight:bold; margin:8px 0; }
+    .price { color:#388e3c; font-weight:bold; }
+    .stock { color:#d32f2f; font-weight:bold; margin:5px 0; }
+    .timer { color:#d32f2f; font-weight:bold; }
+
+    button {
+      width:100%;
+      padding:8px;
+      margin-top:6px;
+      border:none;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    .reserve { background:#ff9f00; color: black; }
+    .confirm { background:#388e3c; color:white; }
+    .cancel { background:#e53935; color:white; }
+
+    .msg { font-size:13px; font-weight:bold; margin-top:6px; }
+
+    footer {
+      margin-top:40px;
+      background:#172337;
+      color:white;
+      padding:20px;
+      text-align:center;
+    }
+    header {
+      background: linear-gradient(90deg, #083275ff, #6a11cb);
       color: white;
-    }
-
-    .cancel {
-      background: #e53935;
-      color: white;
-    }
-
-    .message {
-      margin-top: 15px;
+      padding: 18px 30px;
+      font-size: 22px;
       font-weight: bold;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .modal-content {
+      background: white;
+      width: 90%;
+      height: 90%;
+      padding: 20px;
+      display: flex;
+      gap: 20px;
+      position: relative;
+    }
+
+    .modal-content img {
+      width: 50%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: black;
     }
   </style>
 </head>
 <body>
 
-<header>FlexyPe Flash Sale</header>
+<header>FlexyPe Online Store</header>
 
-<div class="container">
-  <div class="product">
-    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff" />
-    <div class="title">Nike Running Shoes</div>
-    <div class="rating">★★★★☆ (4.4)</div>
-    <div class="price">₹4,999</div>
-    <div class="stock" id="stock">Loading inventory...</div>
-  </div>
+<div class="hero">
+  Flash Sale 🔥 | Limited Stock | Fair Checkout
+</div>
 
- <div class="checkout">
-  <h3>Checkout</h3>
-  <p id="checkoutStock">Checking availability...</p>
+<div class="section-title">Top Deals</div>
+<div class="grid" id="products"></div>
 
+<footer>
+  © 2026 FlexyPe Demo Store — Smart Inventory Reservation System
+</footer>
 
-    <div class="timer" id="timer"></div>
-
-    <button class="reserve" onclick="reserve()">Reserve Item</button>
-    <button class="confirm" onclick="confirmOrder()">Confirm Order</button>
-    <button class="cancel" onclick="cancelOrder()">Cancel</button>
-
-    <div class="message" id="message"></div>
+<div class="modal" id="productModal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">✖</span>
+    <img id="modalImg">
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+      <h2 id="modalName"></h2>
+      <h3 id="modalPrice"></h3>
+      <div id="modalButtons">
+        <button id="modalReserve" class="reserve">Reserve</button>
+        <button id="modalConfirm" class="confirm">Confirm</button>
+        <button id="modalCancel" class="cancel">Cancel</button>
+      </div>
+      <p class="stock" id="modalStock"></p>
+      <p class="timer" id="modalTimer"></p>
+      <p id="modalMsg" class="msg"></p>
+    </div>
   </div>
 </div>
 
 <script>
-const sku = "sku1";
-const reservationId = "user_" + Math.floor(Math.random() * 100000);
-let expiry;
-let interval;
+const EXPIRY_MS = 5 * 60 * 1000;
 
-function loadInventory() {
-  fetch("/inventory/" + sku)
+const products = [
+  { sku:"sku1", name:"Nike Running Shoes", price:4999, img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80" },
+  { sku:"sku2", name:"JBL Bluetooth Speaker", price:5999, img:"https://images.unsplash.com/photo-1693446967879-0dbea1ddde72?w=600&auto=format&fit=crop&q=60" },
+  { sku:"sku3", name:"Samsung Smart Watch", price:7999, img:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80" },
+  { sku:"sku4", name:"Logitech Wireless Mouse", price:1299, img:"https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=800&q=80" },
+  { sku:"sku5", name:"Boat Rockerz Headphones", price:2499, img:"https://images.unsplash.com/photo-1662280804039-8708dd045d65?w=600&auto=format&fit=crop&q=60"},
+  { sku:"sku6", name:"Anker Power Bank", price:1999, img:"https://images.unsplash.com/photo-1632156752304-8b3db7a7bab4?w=600&auto=format&fit=crop&q=60" },
+  { sku:"sku7", name:"Dell Wireless Keyboard", price:1799, img:"https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=800&q=80" },
+  { sku:"sku8", name:"HP HD Webcam", price:2999, img:"https://images.unsplash.com/photo-1740884730591-8f4878e2cc64?w=600&auto=format&fit=crop&q=60" },
+  { sku:"sku9", name:"Seagate External HDD", price:5499, img:"https://images.unsplash.com/photo-1593642634367-d91a135587b5?auto=format&fit=crop&w=800&q=80" },
+  { sku:"sku10", name:"Noise ColorFit Pro", price:3999, img:"https://images.unsplash.com/photo-1608699565448-9492aaf3c708?w=600&auto=format&fit=crop&q=60" },
+  { sku:"sku11", name:"Apple USB-C Adapter", price:1999, img:"https://images.unsplash.com/photo-1662553739062-3c2570008adc?w=600&auto=format&fit=crop&q=60" },
+  { sku:"sku12", name:"Sony Wireless Earbuds", price:6999, img:"https://images.unsplash.com/photo-1556452041-0df5eaa315f8?w=600&auto=format&fit=crop&q=60" },
+  { sku:"sku13", name:"Canon DSLR Camera", price:45999, img:"https://images.unsplash.com/photo-1615747873253-4c4ad5633311?w=600&auto=format&fit=crop&q=60" },
+  { sku:"sku14", name:"Fitbit Fitness Band", price:4999, img:"https://images.unsplash.com/photo-1582765114965-913ae716d5df?w=600&auto=format&fit=crop&q=60"},
+  { sku:"sku15", name:"Razer Gaming Mouse", price:2999, img:"https://images.unsplash.com/photo-1663153949956-605f445ef1a5?w=600&auto=format&fit=crop&q=60" }
+];
+
+const reservations = {};
+const timers = {};
+const container = document.getElementById("products");
+
+function loadProduct(p, el) {
+  fetch("/inventory/" + p.sku)
     .then(r => r.json())
     .then(d => {
-      document.getElementById("stock").innerText =
-        "Only " + d.available + " items left";
-
-      document.getElementById("checkoutStock").innerText =
-        d.available > 0
-          ? "In stock: " + d.available + " item(s)"
-          : "Out of stock";
-
-      document.querySelector(".reserve").disabled = d.available === 0;
+      const stockText = d.available > 0 ? "Only " + d.available + " left" : "Out of stock";
+      el.querySelector(".stock").innerText = stockText;
+      el.querySelector(".reserve").disabled = d.available === 0;
+      
+      if(document.getElementById("productModal").style.display === "flex") {
+        document.getElementById("modalStock").innerText = stockText;
+        document.getElementById("modalReserve").disabled = d.available === 0;
+      }
     });
 }
 
-function reserve() {
-  fetch("/inventory/reserve", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ sku, reservationId })
-  })
-  .then(r => r.json())
-  .then(() => {
-    document.getElementById("message").innerText =
-      "Item reserved. Complete payment to confirm.";
-    expiry = Date.now() + 300000;
-    startTimer();
-    loadInventory();
-  });
-}
-
-function confirmOrder() {
-  fetch("/checkout/confirm", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ sku, reservationId })
-  })
-  .then(r => r.json())
-  .then(() => {
-    clearInterval(interval);
-    document.getElementById("timer").innerText = "";
-    document.getElementById("message").innerText =
-      "Order confirmed successfully!";
-    loadInventory();
-  });
-}
-
-function cancelOrder() {
-  fetch("/checkout/cancel", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ sku, reservationId })
-  })
-  .then(r => r.json())
-  .then(() => {
-    clearInterval(interval);
-    document.getElementById("timer").innerText = "";
-    document.getElementById("message").innerText =
-      "Reservation cancelled.";
-    loadInventory();
-  });
-}
-
-function startTimer() {
-  clearInterval(interval);
-  interval = setInterval(() => {
+function startTimer(p, el) {
+  clearInterval(timers[p.sku]);
+  const expiry = Date.now() + EXPIRY_MS;
+  timers[p.sku] = setInterval(() => {
     const left = expiry - Date.now();
-
+    const t = el.querySelector(".timer");
+    const mt = document.getElementById("modalTimer");
     if (left <= 0) {
-      clearInterval(interval);
-      document.getElementById("timer").innerText = "";
-      document.getElementById("message").innerText =
-        "Reservation expired. Item released back to inventory.";
-      loadInventory();
+      clearInterval(timers[p.sku]);
+      t.innerText = "";
+      if(mt) mt.innerText = "";
+      el.querySelector(".msg").innerText = "Reservation expired.";
+      if(mt) document.getElementById("modalMsg").innerText = "Reservation expired.";
+      loadProduct(p, el);
     } else {
-      document.getElementById("timer").innerText =
-        "Complete checkout in " + Math.floor(left / 1000) + " sec";
+      const timeStr = "Expires in " + Math.floor(left / 1000) + " sec";
+      t.innerText = timeStr;
+      if (mt) mt.innerText = timeStr;
     }
   }, 1000);
 }
 
-loadInventory();
+function openModal(p, el) {
+  document.getElementById("modalImg").src = p.img;
+  document.getElementById("modalName").innerText = p.name;
+  document.getElementById("modalPrice").innerText = "₹" + p.price;
+  document.getElementById("modalStock").innerText = el.querySelector(".stock").innerText;
+  document.getElementById("modalTimer").innerText = el.querySelector(".timer").innerText;
+  document.getElementById("modalMsg").innerText = el.querySelector(".msg").innerText;
+
+  document.getElementById("modalReserve").onclick = () => el.querySelector(".reserve").click();
+  document.getElementById("modalConfirm").onclick = () => el.querySelector(".confirm").click();
+  document.getElementById("modalCancel").onclick = () => el.querySelector(".cancel").click();
+
+  document.getElementById("productModal").style.display = "flex";
+}
+
+function closeModal() {
+  document.getElementById("productModal").style.display = "none";
+}
+
+products.forEach(p => {
+  const el = document.createElement("div");
+  el.className = "card";
+  el.innerHTML = `
+    <img src="${p.img}">
+    <div class="title">${p.name}</div>
+    <div class="price">₹${p.price}</div>
+    <div class="stock">Loading...</div>
+    <div class="timer"></div>
+    <button class="reserve">Reserve</button>
+    <button class="confirm">Confirm</button>
+    <button class="cancel">Cancel</button>
+    <div class="msg"></div>
+  `;
+  container.appendChild(el);
+
+  el.addEventListener('click', (e) => {
+    if (e.target.tagName !== 'BUTTON') {
+      openModal(p, el);
+    }
+  });
+
+  reservations[p.sku] = "user_" + Math.floor(Math.random()*100000);
+
+  el.querySelector(".reserve").onclick = () => {
+    fetch("/inventory/reserve",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({sku:p.sku,reservationId:reservations[p.sku]})})
+      .then(()=>{ 
+        el.querySelector(".msg").innerText="Reserved."; 
+        document.getElementById("modalMsg").innerText="Reserved.";
+        startTimer(p,el); 
+        loadProduct(p,el); 
+      });
+  };
+
+  el.querySelector(".confirm").onclick = () => {
+    fetch("/checkout/confirm",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({sku:p.sku,reservationId:reservations[p.sku]})})
+      .then(()=>{ 
+        clearInterval(timers[p.sku]); 
+        el.querySelector(".timer").innerText=""; 
+        if(document.getElementById("modalTimer")) document.getElementById("modalTimer").innerText="";
+        el.querySelector(".msg").innerText="Order confirmed."; 
+        document.getElementById("modalMsg").innerText="Order confirmed.";
+        loadProduct(p,el); 
+      });
+  };
+
+  el.querySelector(".cancel").onclick = () => {
+    fetch("/checkout/cancel",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({sku:p.sku,reservationId:reservations[p.sku]})})
+      .then(()=>{ 
+        clearInterval(timers[p.sku]); 
+        el.querySelector(".timer").innerText=""; 
+        if(document.getElementById("modalTimer")) document.getElementById("modalTimer").innerText="";
+        el.querySelector(".msg").innerText="Cancelled."; 
+        document.getElementById("modalMsg").innerText="Cancelled.";
+        loadProduct(p,el); 
+      });
+  };
+
+  loadProduct(p, el);
+});
 </script>
 
 </body>
